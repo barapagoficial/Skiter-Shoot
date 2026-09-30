@@ -6,7 +6,7 @@
 <meta name="description" content="Skiter">
 <meta name="theme-color" content="#f6f3e6">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f6f3e6'/%3E%3Crect x='6' y='6' width='52' height='52' rx='8' fill='none' stroke='%231a30c0' stroke-width='3'/%3E%3Ctext x='32' y='45' font-size='34' text-anchor='middle' fill='%23d02030' font-family='cursive' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
-<title>Skiter v1.3 Beta</title>
+<title>Skiter v1.5 Beta</title>
 <style>
 :root { --ink: #1a30c0; --red: #d02030; --paper: #f6f3e6; }
 html, body { margin: 0; height: 100%; overflow: hidden; background: var(--paper); font-family: 'Patrick Hand', 'Caveat', 'Comic Sans MS', 'Marker Felt', 'Segoe Print', cursive; }
@@ -373,7 +373,7 @@ canvas#c { touch-action: none; }
 </script>
 </head>
 <body>
-<div id="dd-titlebar"><span id="dd-title">Skiter <small>v1.3 Beta</small></span><div id="dd-winbtns"><button type="button" data-act="min" title="Minimizar / Minimize">─</button><button type="button" data-act="max" title="Maximizar / Maximize">▢</button><button type="button" data-act="close" title="Cerrar / Close">✕</button></div></div>
+<div id="dd-titlebar"><span id="dd-title">Skiter <small>v1.5 Beta</small></span><div id="dd-winbtns"><button type="button" data-act="min" title="Minimizar / Minimize">─</button><button type="button" data-act="max" title="Maximizar / Maximize">▢</button><button type="button" data-act="close" title="Cerrar / Close">✕</button></div></div>
 <canvas id="c"></canvas>
 <div id="hud"></div>
 <div id="dd-langbar" role="group" aria-label="Language / Idioma"><button type="button" data-lang="es">ES</button><button type="button" data-lang="en">EN</button></div>
@@ -546,12 +546,12 @@ function applyEs(){
     var out=esNode(n.nodeValue);
     if(out!==n.nodeValue){n._ddEn=n.nodeValue;n.nodeValue=out;}
   });
-  document.title="Skiter v1.3 Beta";
+  document.title="Skiter v1.5 Beta";
 }
 function applyEn(){
   var hud=document.getElementById("hud"); if(!hud)return;
   walk(hud,function(n){if(n._ddEn!==undefined){n.nodeValue=n._ddEn;delete n._ddEn;}});
-  document.title="Skiter v1.3 Beta";
+  document.title="Skiter v1.5 Beta";
 }
 function applyAll(){if(window.__ddLang==="es")applyEs();else applyEn();syncAttrs();ddPaintQ();ddPaintMenu();ddPaintAim();if(window.__ddOpen)ddRender();}
 function setStrAttr(id,attr,es,en){var el=document.getElementById(id);if(el)el.setAttribute(attr,window.__ddLang==="es"?es:en);}
@@ -1070,7 +1070,7 @@ document.addEventListener("click",function(e){
   if(b){window.DD_setLang(b.getAttribute("data-lang"));e.stopPropagation();}
 });
 markButtons();
-if(window.__ddLang==="es"){try{document.title="Skiter v1.3 Beta";}catch(e){ddLogError("anonymous",e);}}
+if(window.__ddLang==="es"){try{document.title="Skiter v1.5 Beta";}catch(e){ddLogError("anonymous",e);}}
 window.addEventListener('beforeunload',function(){
 try{if(window.__ddUnload1)window.__ddUnload1();}catch(e){if(window.ddLogError)window.ddLogError("unload",e);}
 try{if(window.__ddUnload2)window.__ddUnload2();}catch(e){if(window.ddLogError)window.ddLogError("unload",e);}
@@ -1610,7 +1610,7 @@ return `<h1>HARD SHOP</h1><h2>wave ${y.wave} cleared \xB7 score <b>${y.score}</b
 function ddHardShopMsg(m){let e=A.el.panel.querySelector("#ddHMsg");e&&(e.textContent=m)}
 function ddHardShopRender(){A.showScreen(ddHardShopHtml());ddHardShopBind()}
 function ddHardShopBind(){let q=A.el.panel.querySelector("#ddHBuyT");q&&q.addEventListener("click",e=>{e.stopPropagation();ddTurretBuy()});let h=A.el.panel.querySelector("#ddHBuyH");h&&h.addEventListener("click",e=>{e.stopPropagation();ddHpBuy()});let n=A.el.panel.querySelector("#ddHNext");n&&n.addEventListener("click",e=>{e.stopPropagation();ddHardShopNext()});Ka()}
-function ddHardShopNext(){y.shopOpen=!1;A.hideScreen();A.setGameplayVisible(!0);nt.mx=0;nt.my=0;nt.mouseBtns={};try{nt.usingGamepad||nt.requestLock()}catch(e){ddLogError("anonymous",e);}y.menu=!1;y.state="play";y.intermission=3}var le=n=>String(n).replace(/[&<>"]/g,t=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[t]);function Z0(){return`<h1>Skiter</h1><div class="dd-ver">v1.3 Beta</div>
+function ddHardShopNext(){y.shopOpen=!1;A.hideScreen();A.setGameplayVisible(!0);nt.mx=0;nt.my=0;nt.mouseBtns={};try{nt.usingGamepad||nt.requestLock()}catch(e){ddLogError("anonymous",e);}y.menu=!1;y.state="play";y.intermission=3}var le=n=>String(n).replace(/[&<>"]/g,t=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[t]);function Z0(){return`<h1>Skiter</h1><div class="dd-ver">v1.5 Beta</div>
     <div class="mainbtns"><button type="button" class="start" id="soloBtn">START<i>solo \xB7 survive the waves</i></button></div>
     ${vn(Yt,!0)}${ddDiffHtml()}${ln()}${qa()}${zs?`<div class="beststat">best score: ${zs}</div>`:""}<div class="mainbtns ddmenu"><button type="button" id="ddBtnInv" onclick="event.stopPropagation();window.ddOpen&&window.ddOpen('inv','arms')">INVENTARIO</button><button type="button" id="ddBtnShop" onclick="event.stopPropagation();window.ddOpen&&window.ddOpen('shop')">TIENDA</button><button type="button" id="ddBtnHelp" onclick="event.stopPropagation();window.ddOpen&&window.ddOpen('help')">¿CÓMO JUGAR?</button><button type="button" id="ddBtnCfg" onclick="event.stopPropagation();window.ddOpen&&window.ddOpen('ajustes')">AJUSTES</button></div><div class="beststat" id="ddWallet"></div>`}function tl(){let n=La(),t=u.isHost,e=n.length;return`<h1>LOBBY</h1><h2>free for all \xB7 first to ${ms} \xB7 ${e}/${u.maxPlayers} players</h2>
     <div class="online" id="online">
