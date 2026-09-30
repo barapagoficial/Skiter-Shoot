@@ -1,0 +1,9 @@
+# Build portable (71 MB exe + win-unpacked = 340 MB, supera el limite de GitHub)
+dist/
+# Dependencias (se reinstalan con npm install)
+node_modules/
+# Backups locales
+*.bak
+# Cachés y capturas personales
+.ruff_cache/
+Capturas errores/

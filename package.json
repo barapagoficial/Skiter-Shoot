@@ -1,0 +1,43 @@
+{
+  "name": "skiter",
+  "version": "1.3.0",
+  "description": "Skiter",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.skiter.game",
+    "productName": "Skiter",
+    "files": [
+      "index.html",
+      "main.js",
+      "preload.js",
+      "package.json",
+      "vendor/**/*"
+    ],
+    "win": {
+      "signAndEditExecutable": false,
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "Skiter-Portable.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8",
+    "playwright-core": "^1.63.0"
+  },
+  "allowScripts": {
+    "electron@33.4.11": true
+  }
+}
