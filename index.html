@@ -289,6 +289,20 @@ canvas#c { touch-action: none; }
 .dd-weap div { font-size: 18px; line-height: 1.3; }
 .dd-weap div b { color: var(--red); }
 .dd-weap .gold { color: var(--red); }
+.dd-weap.cod { display: flex; flex-direction: column; padding: 10px 12px 12px; overflow: hidden; }
+.dd-weap.cod h4 { font-size: 19px; margin: 0 0 6px; letter-spacing: .5px; line-height: 1.05; overflow-wrap: anywhere; border-bottom: 2px solid var(--ink); padding-bottom: 5px; }
+.dd-wicon { display: flex; justify-content: center; padding: 2px 0 6px; }
+.dd-wsvg { width: 128px; height: 48px; color: var(--ink); }
+.dd-weap .dd-stat { display: grid; grid-template-columns: 1fr auto; gap: 0 8px; font-size: 14px; line-height: 1.25; margin: 3px 0; }
+.dd-slabel { opacity: .72; }
+.dd-sval { color: var(--red); font-weight: bold; text-align: right; }
+.dd-sval b { color: var(--red); }
+.dd-sbar { grid-column: 1 / 3; display: block; height: 8px; border: 1.6px solid var(--ink); border-radius: 5px 7px 5px 6px; background: rgba(255,255,255,.5); overflow: hidden; margin-top: 2px; }
+.dd-sbar b { display: block; height: 100%; background: repeating-linear-gradient(-55deg, var(--ink) 0 3px, transparent 3px 6px); border-radius: 3px; }
+.dd-weap .dd-perkrow { margin-top: 8px; font-size: 14px; }
+.dd-perk { display: inline-block; border: 2px solid var(--ink); border-radius: 999px; padding: 2px 11px; background: rgba(255,255,255,.6); color: var(--ink); font-weight: bold; }
+.dd-perk::before { content: "★ "; color: var(--red); }
+.dd-weap.cod:hover { transform: scale(1.03) rotate(-.4deg); box-shadow: 2px 3px 0 rgba(43,58,141,.2); }
 .dd-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; border-bottom: 1.5px dashed rgba(26,48,192,.35); padding: 8px 4px; font-size: 21px; text-align: left; }
 .dd-row .badge { font-size: 16px; border: 2px solid var(--ink); border-radius: 6px; padding: 0 8px; opacity: .8; }
 .dd-row .badge.owned { color: var(--paper); background: var(--ink); opacity: 1; }
@@ -816,6 +830,8 @@ function ddRender(){
   ddBindBody(d);
   if(__ddOpen.name==="gun"){var gb=d.querySelector("#ddBack");if(gb)gb.onclick=function(e){e.stopPropagation();ddOpen("inv","arms");};}
 }
+var DD_INV_BARS={rifle:[34,88,78],shotgun:[92,22,30],sniper:[100,14,24],katana:[72,62,100],acid:[84,72,68],deagle:[66,42,34]};
+function ddInvIcon(id){var z='<svg class="dd-wsvg" viewBox="0 0 48 20" fill="currentColor">';if(id==="shotgun")return z+'<path d="M1 8l6-3h5l2 2h33v3H26l-1 3h-5l1-3h-6l-6 5H4l6-5H7L3 12z"/><path d="M20 12h7v2.5h-7z"/></svg>';if(id==="sniper")return z+'<path d="M1 9l5-3h4l2-2h2v2h33v3H30l-1 4h-4l1-4h-9l-4 7H9l4-7h-5l-3 3H2z"/><rect x="17" y="1" width="10" height="3.4" rx="1.7"/></svg>';if(id==="katana")return z+'<path d="M46 1c-9 1-24 6-33 11l1 2.4c10-3 25-9.4 33-12.4z"/><circle cx="12" cy="14.5" r="2.3"/><path d="M9.5 15.5L3 19l1.4 2 6-4z"/></svg>';if(id==="acid")return z+'<path d="M1 8h7l2-3h7c8 0 13 2 13 4v2H20l-3 6h-5l3-6H8l-2 3H2l2-4-3-.6z"/><circle cx="35" cy="13" r="4.6"/><path d="M41 5.5c2.4 1.2 4.6 3.5 4.6 5.8h-2.2c0-1.4-1.4-3.4-3.4-4.4z"/></svg>';if(id==="deagle")return z+'<path d="M7 4h35v7h-4l-2 3H26l1-3h-8l-4 9h-8l4-9H7z"/></svg>';return z+'<path d="M1 7h4V5h2v2h1l1-2h13l1 2h13l11 2v2l-11 2h-4l-2 5h-4l2-5h-8l-3 6h-4l3-6H9l-2 3H3l2-4-4-1z"/></svg>'}
 function ddInvTab(T,tab){
   tab="arms";
   var host=document.getElementById("ddTabBody");if(!host)return;
@@ -824,8 +840,14 @@ function ddInvTab(T,tab){
     var ge=!!(gold.equipped);
     host.innerHTML='<div class="dd-grid">'+ddWList(T).map(w=>{
       var dmg=w[2]==="rifle"?T.inv.golddmg(ge):w[1][0][1];
-      var rows=w[1].map((r,i)=>'<div>'+(i===0?T.inv.dmg:r[0]==="Daño"||r[0]==="Damage"?T.inv.dmg:r[0]==="Cadencia"||r[0]==="Rate"?T.inv.rate:r[0]==="Cargador"||r[0]==="Mag"?T.inv.mag:T.inv.special)+' <b>'+(i===0?dmg:r[1])+'</b></div>').join("");
-      return '<div class="dd-weap" data-gun="'+w[2]+'"><h4>'+w[0]+'</h4>'+rows+'</div>';
+      var bars=DD_INV_BARS[w[2]]||[50,50,50];
+      var rows=w[1].map(function(r,i){
+        var lab=(i===0?T.inv.dmg:r[0]==="Daño"||r[0]==="Damage"?T.inv.dmg:r[0]==="Cadencia"||r[0]==="Rate"?T.inv.rate:r[0]==="Cargador"||r[0]==="Mag"?T.inv.mag:T.inv.special);
+        var val=(i===0?dmg:r[1]);
+        if(i<3)return '<div class="dd-stat"><span class="dd-slabel">'+lab+'</span><span class="dd-sval">'+val+'</span><i class="dd-sbar"><b style="width:'+bars[i]+'%"></b></i></div>';
+        return '<div class="dd-perkrow"><span class="dd-perk">'+val+'</span></div>';
+      }).join("");
+      return '<div class="dd-weap cod" data-gun="'+w[2]+'"><div class="dd-wicon">'+ddInvIcon(w[2])+'</div><h4>'+w[0]+'</h4>'+rows+'</div>';
     }).join("")+'</div>';
   }else if(tab==="skins"){
     var st=!gold.owned?'<span class="badge">'+T.inv.locked+'</span>':(gold.equipped?'<span class="badge equipped">'+T.inv.equipped+'</span>':'<span class="badge owned">'+T.inv.owned+'</span>');
